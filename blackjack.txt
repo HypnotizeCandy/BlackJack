@@ -1,0 +1,256 @@
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class blackjack implements ActionListener {
+	//integer variables
+    int wins;
+    int losses;
+    int balance;
+    int bet;
+    int valP;
+    int valD;
+
+    //JButtons
+    JButton play; // to blackjack screen
+    JButton play2; //to play again
+    JButton back; //back to menu from help screen
+    JButton back2; //back to menu from blackjack screen
+    JButton reset; //reset from out of funds screen
+    JButton plus1; //adds 1 to bet
+    JButton plus2; //adds 10 to bet
+    JButton plus3; //adds 25 to bet
+    JButton plus4; //adds 50 to bet
+    JButton plus5; //adds 100 to bet
+    JButton plus6; //adds 500 to bet
+    JButton plus7; // resets bet
+    JButton submit; //submits bet
+    JButton submit2; // submits player option
+
+    //JFrames and JPanels
+    JFrame frame;
+    JPanel panel;
+    JFrame frame2;
+    JPanel panel2;
+    JFrame frame3;
+    JPanel panel3;
+    JFrame frame4;
+    JPanel panel4;
+    JFrame frame5;
+    JPanel panel5;
+    JPanel panel6;
+    JPanel panel7;
+    JPanel panel8;
+
+    //JLabels
+    JLabel betAmt;
+    JLabel warning;
+    JLabel choice;
+    JLabel valsD;
+    JLabel valsP;
+    JLabel labelc;
+    JLabel bust;
+    JLabel bustD;
+    JLabel winsD;
+    JLabel winsP;
+    JLabel draw;
+    JLabel label23;
+    JLabel labelWins;
+    JLabel labelLosses;
+    JLabel labelBalance;
+    JLabel warning2;
+    GridLayout grid;
+    GridLayout grid2;
+
+    //Hands
+    ArrayList<JLabel> cardsD;
+    ArrayList<JLabel> cardsP;
+
+    //Drop down menu
+    JComboBox<String> options;
+
+    //cards
+    String[] cards;
+    String[] suits;
+    String[] deck;
+    int[] cardVals;
+
+    //to be used
+    public boolean playable = true;
+
+    public blackjack() { //constructor method
+        //Integer variables
+        wins = 0;
+        losses = 0;
+        balance = 1000;
+        bet = 0;
+        valP = 0;
+        valD = 0;
+
+        //JLabels
+        betAmt = new JLabel("Amount Bet: $" + bet + "⠀⠀⠀⠀⠀⠀");
+        warning = new JLabel("⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀");
+        warning2 = new JLabel("*Insufficient funds for double down");
+        choice = new JLabel("No option selected");
+        labelc = new JLabel("Chose an option from below, and click submit");
+        label23 = new JLabel("⠀⠀⠀⠀⠀⠀Current Balance: $" + balance);
+        labelWins = new JLabel("Wins: " + wins);
+        labelLosses = new JLabel("Losses: " + wins);
+        labelBalance = new JLabel("⠀⠀⠀⠀⠀⠀⠀⠀⠀Balance: $" + balance + "⠀⠀⠀⠀⠀⠀⠀⠀⠀");
+      //Jframes
+        frame = new JFrame("Menu Screen");
+        frame2 = new JFrame("Blackjack Screen");
+        frame3 = new JFrame("Help Screen");
+        frame4 = new JFrame("Out of Funds Screen");
+        frame5 = new JFrame("Bet Screen");
+
+        //JPanels
+        panel = new JPanel();
+        panel2 = new JPanel();
+        panel3 = new JPanel();
+        panel4 = new JPanel();
+        panel5 = new JPanel();
+        panel6 = new JPanel();
+        panel7 = new JPanel();
+        panel8 = new JPanel();
+        frame.add(panel);
+        frame2.add(panel2);
+        frame3.add(panel3);
+        frame4.add(panel4);
+        frame5.add(panel5);
+
+        //GridLayouts 
+        grid = new GridLayout(6, 2); // Note: maximum cards possible to be held is 11
+        grid2 = new GridLayout(6, 2);
+
+        //Global JButtons  
+        play = new JButton("Start");
+        back = new JButton("Back To Menu");
+        back2 = new JButton("Back To Menu");
+        reset = new JButton("Try Again?");
+        plus1 = new JButton("+1");
+        plus2 = new JButton("+10");
+        plus3 = new JButton("+25");
+        plus4 = new JButton("+50");
+        plus5 = new JButton("+100");
+        plus6 = new JButton("+500");
+        plus7 = new JButton("Reset");
+        submit = new JButton("Submit");
+        submit2 = new JButton("Submit");
+        play2 = new JButton("⠀⠀⠀⠀⠀PLAY AGAIN⠀⠀⠀⠀⠀");
+    }
+    public void outputGUI() {
+    	String[] list = {"Select option", "Hit", "Stand", "Double down"};
+        options = new JComboBox<String>(list);
+
+        //adding ActionListerners
+        play.addActionListener(this);
+        back.addActionListener(this);
+        back2.addActionListener(this);
+        reset.addActionListener(this);
+        plus1.addActionListener(this);
+        plus2.addActionListener(this);
+        plus3.addActionListener(this);
+        plus4.addActionListener(this);
+        plus5.addActionListener(this);
+        plus6.addActionListener(this);
+        plus7.addActionListener(this);
+        submit.addActionListener(this);
+        submit2.addActionListener(this);
+        play2.addActionListener(this);
+    }
+    
+    public void setFrame(JFrame frame, int length, int width, boolean visibility) {
+        frame.setSize(length, width);
+        frame.setLocationRelativeTo(null); // centers window     
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(visibility);
+    } //end of setFrame
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == play) {
+            frame.setVisible(false);
+            System.out.println("Play pressed.");
+            frame5.setVisible(true);
+        } // end of play button
+        
+        if (e.getSource() == back) {
+            frame3.setVisible(false);
+            frame.setVisible(true);
+        } // end of back button
+
+        if (e.getSource() == back2) {
+            frame2.setVisible(false);
+            frame.setVisible(true);
+        } // end of back2 button
+
+        if (e.getSource() == reset) {
+            frame4.setVisible(false);
+            frame.setVisible(true);
+        }// end of reset button
+
+        if (e.getSource() == plus1) {
+            if (bet + 1 <= balance) {
+                bet = bet + 1;
+                betAmt.setText("Amount Bet: $" + bet + "⠀⠀⠀⠀⠀⠀");
+            } // end of add 1 button
+
+        }
+        if (e.getSource() == plus2) {
+            if (bet + 10 <= balance) {
+                bet = bet + 10;
+                betAmt.setText("Amount Bet: $" + bet + "⠀⠀⠀⠀⠀⠀");
+            } // end of add 10 button
+        }
+
+        if (e.getSource() == plus3) {
+            if (bet + 25 <= balance) {
+                bet = bet + 25;
+                betAmt.setText("Amount Bet: $" + bet + "⠀⠀⠀⠀⠀⠀");
+            } // end of add 25 button
+        }
+
+        if (e.getSource() == plus4) {
+            if (bet + 50 <= balance) {
+                bet = bet + 50;
+                betAmt.setText("Amount Bet: $" + bet + "⠀⠀⠀⠀⠀⠀");
+            } // end of add 50 button
+        }
+
+        if (e.getSource() == plus5) {
+            if (bet + 100 <= balance) {
+                bet = bet + 100;
+                betAmt.setText("Amount Bet: $" + bet + "⠀⠀⠀⠀⠀⠀");
+            } // end of add 100 button
+        }
+
+        if (e.getSource() == plus6) {
+            if (bet + 500 <= balance) {
+                bet = bet + 500;
+                betAmt.setText("Amount Bet: $" + bet + "⠀⠀⠀⠀⠀⠀");
+            } // end of add 500 button
+        }
+
+        if (e.getSource() == plus7) {
+            bet = 0;
+            betAmt.setText("Amount Bet: $" + bet + "⠀⠀⠀⠀⠀⠀");
+        } // end of reset button
+
+        if (e.getSource() == submit) {
+            if (bet > 0) {
+                warning.setText("⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀");
+                frame5.setVisible(false);
+                frame2.setVisible(true);
+            } else {
+                warning.setText("  Cannot enter game without betting.");
+            }
+           } 
+          }
+    
+}
